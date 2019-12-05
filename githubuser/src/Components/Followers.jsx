@@ -3,18 +3,18 @@ import axios from 'axios';
 import FUsers from "./FUsers";
 
 class Followers extends Component{
-    constructor(props)
-        super(props);
+    constructor(){
+        super();
         this.state = {
         FollowersInfo:[]
     };
-    
+}
     componentDidMount(){
         axios
         .get ('https://api.github.com/users/marielapg/followers')
         .then( results => {
             console.log(results)
-            this.setState({FollowersInfo: results.info})
+            this.setState({FollowersInfo: results.data})
          })
          .catch(error => {
              console.log('Follower info grab error:', error.response)
@@ -24,8 +24,8 @@ class Followers extends Component{
 
         render(){
             return(
+            
                 <div>
-                    <h3>My Followers</h3>
                     <div className="Card">
                         {this.state.FollowersInfo.map(user => (
                             <FUsers 

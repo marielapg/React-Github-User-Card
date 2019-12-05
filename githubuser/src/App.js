@@ -1,26 +1,40 @@
-import React from 'react';
-// import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import axios from 'axios';
+import Followers from './Components/Followers';
+import {Card,CardImg, CardBody, CardTitle, CardSubtitle, CardText} from 'reactstrap';
 
-function App() {
-  return (
-    <div className="App">
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
-    </div>
-  );
+class App extends Component {
+    constructor(){
+        super();
+        this.state ={
+            GitHub: null
+        };
+    }
+    componentDidMount() {
+        axios 
+        .get ('https://api.github.com/users/marielapg')
+        .then( results => {
+            console.log(results.data)
+            this.setState({GitHub: results.data})
+        })
+    }
+    render(){
+      const {GitHub} = this.state;
+      
+        return (
+            <div className="AppF">
+              {GitHub && <Card>
+                <CardImg src={GitHub.avatar_url}/>
+                <CardBody>
+                        <CardTitle>{GitHub.login}</CardTitle>
+                        <CardSubtitle>{GitHub.location}</CardSubtitle>
+                        <CardText>{GitHub.bio}</CardText>
+                    </CardBody>
+                </Card>}
+                <Followers/>
+            </div>
+        )
+    }
 }
 
 export default App;
